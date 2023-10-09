@@ -37,11 +37,11 @@ class ViewController: UIViewController, LavkaDelegate {
     @IBOutlet var PlayerDefen: UILabel!
     @IBOutlet var PlayerDamageRenge: UILabel!
     
+    @IBOutlet var FireBallButton: UIButton!
     
     @IBOutlet var MonsterDamageRenge: UILabel!
     @IBOutlet var MonsterDefense: UILabel!
     
-    @IBOutlet var IconAttack: UILabel!
     
     @IBOutlet var DiceAnimate: UILabel!
     @IBOutlet var ResultLabel: UILabel!
@@ -75,6 +75,21 @@ class ViewController: UIViewController, LavkaDelegate {
     
     @IBAction func rollDiceButtonTapped(_ sender: UIButton) {
         RollDiceButton.isEnabled = false
+      
+       let damage = game.player.attack(target: game.monster)
+        if damage > 0 {
+            if attackChoose{
+                game.player.takeDamage(damage, target: game.monster)
+            }
+            else{
+                game.player.useFireball()
+                game.player.takeDamage(damage*2, target: game.monster)
+                updateUI()
+                attackChoose = true
+                print(" урон c огоньком: \(damage*2)")
+            }
+            
+        }
         playerTurn()
        
     }
@@ -106,7 +121,7 @@ class ViewController: UIViewController, LavkaDelegate {
     // MARK: - CreatureTurn Methods
     
     func playerTurn() {
-        game.playerTurn()
+//        game.playerTurn()
         animatePlayerAttack()
         rollDice(game.player.diceCount) {
             // Завершение анимации игрока
@@ -134,9 +149,10 @@ class ViewController: UIViewController, LavkaDelegate {
             } else {
                 // Обновление UI после хода монстра
                 self.updateUI()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                    self.RollDiceButton.isEnabled = true
-                    self.DamagePlayer.isHidden = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { [self] in
+                    RollDiceButton.isEnabled = true
+                    game.player.fireballCooldownDecreases()
+                    DamagePlayer.isHidden = true
                     
                 }
                 
@@ -153,10 +169,19 @@ class ViewController: UIViewController, LavkaDelegate {
         Money.text = "\(game.player.moneyCount)"
         
         if attackChoose == true {
-            IconAttack.text = "🗡️"
+            RollDiceButton.setTitle("Бросить кубик 🗡️", for: .normal)
         }
         else {
-            IconAttack.text = "🔥"
+            RollDiceButton.setTitle("Бросить кубик 🔥", for: .normal)
+        }
+      
+        if game.player.fireballCooldown > 0 {
+            FireBallButton.isEnabled = false
+            FireBallButton.setTitle("\(game.player.fireballCooldown)", for: .normal)
+        }
+        else if game.player.fireballCooldown == 0{
+            FireBallButton.isEnabled = true
+            FireBallButton.setTitle("🔥", for: .normal)
         }
         
         
@@ -203,8 +228,10 @@ class ViewController: UIViewController, LavkaDelegate {
                 // Начать игру заново
                 self.DamagePlayer.isHidden = true
                 self.RollDiceButton.isEnabled = true
+                self.game.player.fireballCooldown = 0
                 self.game.restartGame()
                 self.updateUI()
+                self.setupUI()
             }
             alertController.addAction(restartAction)
             present(alertController, animated: true, completion: nil)
@@ -221,6 +248,7 @@ class ViewController: UIViewController, LavkaDelegate {
                 self.DamageMoster.isHidden = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                     self.RollDiceButton.isEnabled = true
+                    self.game.player.fireballCooldown = 0
                     
                 }
             }
@@ -250,7 +278,7 @@ class ViewController: UIViewController, LavkaDelegate {
             UIView.animate(withDuration: 0.1, animations: {
                 enemyLabel.frame.origin.x -= (isPlayer ? -20 : 20) // Сдвигаем текст влево для игрока и вправо для монстра
             }) { (completed) in
-                if damage >= 5 {
+                if  damage > 0 {
                     damageLabel.isHidden = false
                     damageLabel.text = "-\(damage)"
                 } else {
@@ -338,7 +366,8 @@ class ViewController: UIViewController, LavkaDelegate {
         if segue.identifier == "ShowLavkaSegue", let lavkaVC = segue.destination as? ViewControllerStore {
             lavkaVC.delegate = self
             lavkaVC.money = game.player.moneyCount
-            print("Передано значение money: \(game.player.moneyCount)")
+            lavkaVC.fireballCooldowntUsed = game.player.fireballCooldowntUsed
+            print("Передано значение money: \(game.player.fireballCooldowntUsed)")
         }
     }
     
@@ -357,11 +386,20 @@ class ViewController: UIViewController, LavkaDelegate {
         updateUI()
     }
     
-    func didUpgradeAttack(damageIncrease: String, cost: Int) {
+    func didUpgradeAttack(attack: String, cost: Int) {
         game.player.moneyCount -= cost
-        game.player.upgrate += 1
-        PlayerDamageRenge.text = "\(game.player.damageRange) +\(game.player.upgrate)"
-        print("Улучшение  \(damageIncrease), стоимость: \(cost)")
+        
+        if attack == "Sword" {
+            game.player.upgrate += 1
+            PlayerDamageRenge.text = "\(game.player.damageRange) +\(game.player.upgrate)"
+        }
+        else if attack == "FireBall" {
+            game.player.fireballCooldowntUsed -= 1
+          
+           
+        }
+       
+        print("Улучшение  \(attack), стоимость: \(cost)")
         updateUI()
     }
     override func viewDidLayoutSubviews() {

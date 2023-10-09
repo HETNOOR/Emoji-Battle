@@ -353,7 +353,7 @@
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title="Бросить кубик"/>
+                                        <state key="normal" title="Бросить кубик "/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                 <integer key="value" value="10"/>
@@ -399,13 +399,6 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🗡️" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="smL-9S-lB4">
-                                        <rect key="frame" x="324" y="327" width="45" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="40"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.21960783" green="0.39607840779999998" blue="0.36078432199999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <userDefinedRuntimeAttributes>
@@ -433,6 +426,7 @@
                         <outlet property="DiceAnimate" destination="mVf-hz-TqL" id="wuH-mM-lgm"/>
                         <outlet property="DiceCount" destination="hOn-ou-Eey" id="xhw-oR-sDU"/>
                         <outlet property="DiceView" destination="7YT-18-ldB" id="cHa-iz-Kf5"/>
+                        <outlet property="FireBallButton" destination="rqE-70-zj6" id="caI-Zz-Occ"/>
                         <outlet property="HealingPotionCount" destination="bQ5-4m-4Tj" id="hB9-HH-HvR"/>
                         <outlet property="HealthBar" destination="ftc-4L-mQx" id="vsO-ea-4Bt"/>
                         <outlet property="HealthBarBackground" destination="UFc-GY-lxD" id="8Wd-1D-BKz"/>
@@ -440,7 +434,6 @@
                         <outlet property="HealthBarMonster" destination="58E-fG-n7Q" id="xgz-pX-bYY"/>
                         <outlet property="HealthCountMonster" destination="4HM-gR-WEY" id="aK4-hI-whI"/>
                         <outlet property="HealthCountPlayer" destination="pti-7O-PIu" id="nU3-0d-DZy"/>
-                        <outlet property="IconAttack" destination="smL-9S-lB4" id="mKL-4k-m16"/>
                         <outlet property="Menuview" destination="GKF-lw-DPo" id="NbD-3T-ERb"/>
                         <outlet property="Money" destination="bTq-FQ-MsV" id="MnA-O4-2b4"/>
                         <outlet property="MonsterDamageRenge" destination="2wo-1H-pps" id="ejZ-2l-IUe"/>

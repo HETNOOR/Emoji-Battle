@@ -16,14 +16,10 @@ class Game {
         monster = Monster(attack: 8, defense: 4, health: 30, damageRange: 2...8)
     }
     
-    func playerTurn() {
-        
-        player.attack(target: monster)
-        
-    }
+    
     
     func monsterTurn() {
-        monster.attack(target: player)
+        monster.takeDamage(monster.attack(target: player), target: player)
     
     }
     
@@ -40,5 +36,6 @@ class Game {
            player = Player(attack: 10, defense: 5, health: 50, damageRange: 1...6)
            monster = Monster(attack: 8, defense: 4, health: 50, damageRange: 2...8)
        }
-    // Дополнительные методы для управления игрой, если необходимо
+   
+   
 }

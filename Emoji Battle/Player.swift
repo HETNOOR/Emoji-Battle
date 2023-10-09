@@ -10,16 +10,14 @@ import Foundation
 class Player: Creature {
     var healingPotionsCount: Int = 4
     var bombsCount: Int = 2
-    var fireballCooldown: Int = 0 // Кулдаун для Fireball
+    var fireballCooldown: Int = 0
     var moneyCount: Int = 0
-
+    var fireballCooldowntUsed: Int = 4
     
-    func useFireball(target: Creature) {
+    
+    func useFireball() {
         if fireballCooldown == 0 {
-            // Логика для использования Fireball
-            // Рассчитываем атаку и анимацию
-            // Применяем двойной урон к цели
-            fireballCooldown = 4
+            fireballCooldown = fireballCooldowntUsed
         }
     }
     
@@ -28,8 +26,8 @@ class Player: Creature {
             // Генерируем случайный урон от 5 до 25
             let damage = Int.random(in: 5...25)
             
-            target.takeDamage(damage)
-    
+            target.takeDamage(damage, target: target)
+            
             bombsCount -= 1
         }
     }
@@ -42,10 +40,16 @@ class Player: Creature {
             if health > healthMax {
                 health = healthMax
             }
-            // Применяем исцеление
+           
             healingPotionsCount -= 1
         }
     }
-   
+    func fireballCooldownDecreases() {
+        fireballCooldown -= 1
+        if fireballCooldown - 1 < 0 {
+            fireballCooldown = 0
+        }
+        
+    }
+    
 }
-
