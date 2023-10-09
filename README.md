@@ -110,6 +110,7 @@
 ### Связь с автором
 
 Для связи с автором проекта вы можете использовать Telegram: `@hetnoor`.
+`daffixipop@gmail.com`
 
 Приятной игры в "Emoji Battle"!
 
