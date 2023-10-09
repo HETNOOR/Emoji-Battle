@@ -7,14 +7,14 @@
 
 import UIKit
 // Протокол для делегирования данных
-protocol LavkaDelegate: AnyObject {
+protocol StoreDelegate: AnyObject {
     func didPurchase(item: String, cost: Int)
     func didUpgradeAttack(attack: String, cost: Int)
 }
 
 class ViewControllerStore: UIViewController {
 
-    weak var delegate: LavkaDelegate?
+    weak var delegate: StoreDelegate?
     var money: Int = 0
     var potions: Int = 0
     var bombs: Int = 0

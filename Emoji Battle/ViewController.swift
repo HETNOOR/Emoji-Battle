@@ -9,7 +9,7 @@ import UIKit
 import CoreGraphics
 import Foundation
 
-class ViewController: UIViewController, LavkaDelegate {
+class ViewController: UIViewController, StoreDelegate {
    
     
     
@@ -34,6 +34,7 @@ class ViewController: UIViewController, LavkaDelegate {
     @IBOutlet var DamageMoster: UILabel!
     @IBOutlet var DamagePlayer: UILabel!
     
+   
     @IBOutlet var PlayerDefen: UILabel!
     @IBOutlet var PlayerDamageRenge: UILabel!
     
@@ -292,14 +293,12 @@ class ViewController: UIViewController, LavkaDelegate {
                 }) { (completed) in
                     impactFeedbackGenerator.impactOccurred()
                     print("*Вибрация*")
-                    if self.game.isGameOver() {
-                        self.endGame()
-                    } else {
+                    
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                             
                             damageLabel.isHidden = true
                         }
-                    }
+                    
                 }
             }
         }
@@ -362,11 +361,12 @@ class ViewController: UIViewController, LavkaDelegate {
     
     // MARK: - segue
     
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "ShowLavkaSegue", let lavkaVC = segue.destination as? ViewControllerStore {
-            lavkaVC.delegate = self
-            lavkaVC.money = game.player.moneyCount
-            lavkaVC.fireballCooldowntUsed = game.player.fireballCooldowntUsed
+        if segue.identifier == "ShowStoreSegue", let StoreVC = segue.destination as? ViewControllerStore {
+            StoreVC.delegate = self
+            StoreVC.money = game.player.moneyCount
+            StoreVC.fireballCooldowntUsed = game.player.fireballCooldowntUsed
             print("Передано значение money: \(game.player.fireballCooldowntUsed)")
         }
     }
