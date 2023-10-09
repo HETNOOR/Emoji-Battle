@@ -10,6 +10,7 @@ import CoreGraphics
 import Foundation
 
 class ViewController: UIViewController, LavkaDelegate {
+   
     
     
     
@@ -40,6 +41,7 @@ class ViewController: UIViewController, LavkaDelegate {
     @IBOutlet var MonsterDamageRenge: UILabel!
     @IBOutlet var MonsterDefense: UILabel!
     
+    @IBOutlet var IconAttack: UILabel!
     
     @IBOutlet var DiceAnimate: UILabel!
     @IBOutlet var ResultLabel: UILabel!
@@ -57,6 +59,7 @@ class ViewController: UIViewController, LavkaDelegate {
     // MARK: - Properties
     var originalFrame: CGRect!
     var game: Game!
+    var attackChoose = true
     
     
     
@@ -71,7 +74,6 @@ class ViewController: UIViewController, LavkaDelegate {
     // MARK: - Actions
     
     @IBAction func rollDiceButtonTapped(_ sender: UIButton) {
-        // Игрок бросает кубик и выполняет анимацию атаки
         RollDiceButton.isEnabled = false
         playerTurn()
        
@@ -90,6 +92,16 @@ class ViewController: UIViewController, LavkaDelegate {
         if game.isGameOver() {endGame()}
     }
     
+    @IBAction func FireBallrollButtonTapped(_ sender: Any) {
+        attackChoose = false
+        updateUI()
+        
+    }
+    
+    @IBAction func SwordButtonTapped(_ sender: Any) {
+        attackChoose = true
+        updateUI()
+    }
     
     // MARK: - CreatureTurn Methods
     
@@ -139,6 +151,14 @@ class ViewController: UIViewController, LavkaDelegate {
     func updateUI() {
         // Обновление здоровья игрока и монстра на экране
         Money.text = "\(game.player.moneyCount)"
+        
+        if attackChoose == true {
+            IconAttack.text = "🗡️"
+        }
+        else {
+            IconAttack.text = "🔥"
+        }
+        
         
         HealthCountPlayer.text = " \(game.player.health)"
         HealthCountMonster.text = " \(game.monster.health)"
@@ -337,11 +357,11 @@ class ViewController: UIViewController, LavkaDelegate {
         updateUI()
     }
     
-    func didUpgradeAttack(damageIncrease: Int, cost: Int) {
+    func didUpgradeAttack(damageIncrease: String, cost: Int) {
         game.player.moneyCount -= cost
         game.player.upgrate += 1
         PlayerDamageRenge.text = "\(game.player.damageRange) +\(game.player.upgrate)"
-        print("Улучшение атаки +\(damageIncrease), стоимость: \(cost)")
+        print("Улучшение  \(damageIncrease), стоимость: \(cost)")
         updateUI()
     }
     override func viewDidLayoutSubviews() {

@@ -30,35 +30,23 @@ class Creature {
 
     }
     
-    func attack(target: Creature) {
+    func attack(target: Creature)   {
         
             // Рассчитываем Модификатор атаки
             let attackModifier = max(attack - target.defense + 1, 1)
             
             // Бросок N кубиков
             let numberOfDice = attackModifier
-            var success = false
             for _ in 1...numberOfDice {
                 let diceRoll = Int.random(in: 1...6)
                 diceCount = diceRoll
                 if diceRoll >= 5 {
-                    success = true
+                    let damage = Int.random(in: damageRange)
+                    target.takeDamage(damage+upgrate)
                     break
                 }
             }
-      
-        
-        
-        
-      
-            
-            // Если удар успешен, наносим урон
-            if success {
-                let damage = Int.random(in: damageRange)
-                target.takeDamage(damage+upgrate)
-                print("\(target) урон: \(damage) бонус: \(upgrate) = \(damage + upgrate)")
-                
-            }
+          
         }
     
     

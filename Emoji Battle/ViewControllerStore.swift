@@ -9,7 +9,7 @@ import UIKit
 // Протокол для делегирования данных
 protocol LavkaDelegate: AnyObject {
     func didPurchase(item: String, cost: Int)
-    func didUpgradeAttack(damageIncrease: Int, cost: Int)
+    func didUpgradeAttack(damageIncrease: String, cost: Int)
 }
 
 class ViewControllerStore: UIViewController {
@@ -35,14 +35,18 @@ class ViewControllerStore: UIViewController {
     }
     
    
-
-       @IBAction func purchasePotionButtonTapped(_ sender: UIButton) {
-           if money >= 10 {
-               money -= 10
-               potions += 1
-               delegate?.didPurchase(item: "Potion", cost: 10)
-               updateUI()
-           }
+    
+    @IBAction func purchasePotionButtonTapped(_ sender: UIButton) {
+        if money >= 10 {
+            money -= 10
+            potions += 1
+            delegate?.didPurchase(item: "Potion", cost: 10)
+            updateUI()
+        }
+        else {
+            AlertNoMoney()
+        }
+           
        }
 
        @IBAction func purchaseBombButtonTapped(_ sender: UIButton) {
@@ -52,25 +56,44 @@ class ViewControllerStore: UIViewController {
                delegate?.didPurchase(item: "Bomb", cost: 20)
                updateUI()
            }
+           else {
+               AlertNoMoney()
+           }
        }
 
        @IBAction func upgradeAttackButtonTapped(_ sender: UIButton) {
            if money >= 30 {
                money -= 30
-               attackDamage += 5
-               delegate?.didUpgradeAttack(damageIncrease: 5, cost: 30)
+               delegate?.didUpgradeAttack(damageIncrease: "Sword", cost: 30)
                updateUI()
+           }
+           else {
+               AlertNoMoney()
            }
        }
     
 
     @IBAction func BuyUpgradeFireBall(_ sender: Any) {
+        if money >= 40 {
+            money -= 40
+            delegate?.didUpgradeAttack(damageIncrease:  "FireBall", cost: 40)
+            updateUI()
+        }
+        else {
+            AlertNoMoney()
+        }
     }
     
     func updateUI() {
         MoneyCount.text = "\(money)"
     }
     
-  
+    func AlertNoMoney() {
+        
+        let alert = UIAlertController(title: "Внимание", message: "Не хватает монет", preferredStyle: .alert)
+        let okBtn = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(okBtn)
+        present(alert, animated: true, completion: nil)
+    }
     
 }
